@@ -1,10 +1,11 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
 
   def create
     @question = Question.new(question_params)
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your question successfully created.'
     else 
       render :new
     end
@@ -12,7 +13,7 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to @question
+      redirect_to @question, notice: 'Question updated'
     else 
       render :edit
     end
@@ -23,6 +24,13 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answers = @question.answers
+    @answer = @question.answers.build
+    
+    #if @answer.save
+    #  render @question, notice: 'You created new answer'
+    #else
+    #end
   end
 
   def new

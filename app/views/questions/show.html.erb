@@ -1,0 +1,12 @@
+<%= @question.title %>
+<%= @question.body %>
+<%= link_to 'Edit', edit_question_path(@question) %>
+<% @answers.each do |answer| %>
+  <%= answer.body %>
+<% end %>
+<%#= render 'answers/new', question: @question %>
+<%= form_with model: [@question, @answer], local: true do |f| %>
+  <%= f.label :body %>
+  <%= f.text_area :body %>
+  <%= f.submit 'Create answer' %>
+<% end %>
