@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :set_question, only: [:index, :new, :edit, :create, :update, :destroy]
-  before_action :set_answer, only: [:update, :edit, :destroy]
+  before_action :set_question, only: [:index, :new, :edit, :create, :update]
+  before_action :set_answer, only: [:update, :edit]
 
   def index
     @answers = @question.answers
@@ -15,8 +15,9 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     if @answer.save
-      redirect_to @question, notice: '123'
+      redirect_to @question, notice: 'Answer successfuly created'
     else
       redirect_to @question
     end
@@ -31,8 +32,10 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.find(params[:id])
     @answer.destroy
-    redirect_to @answer.question
+    redirect_to @answer.question, notice: "Answer deleted"
   end
 
   private

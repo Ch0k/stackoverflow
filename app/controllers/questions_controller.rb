@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
+    @question.user = current_user
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else 
@@ -26,11 +27,6 @@ class QuestionsController < ApplicationController
   def show
     @answers = @question.answers
     @answer = @question.answers.build
-    
-    #if @answer.save
-    #  render @question, notice: 'You created new answer'
-    #else
-    #end
   end
 
   def new
@@ -42,7 +38,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question.destroy
-    redirect_to questions_path
+    redirect_to questions_path, notice: "Question deleted"
   end
 
   private

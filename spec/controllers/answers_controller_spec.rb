@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) } 
-
+  let(:user) {create(:user)}
+  let(:question) { create(:question, user: user) } 
   describe 'GET #index' do
-    let(:answers) { create_list(:answer,3, question:  question )}
-
+    let(:answers) { create_list(:answer,3, question:  question, user: user )}
     before { get :index, params: { question_id: question } }
     it 'populates an array of all question in question' do 
       expect(assigns(:answers)).to match_array(answers)
@@ -29,7 +28,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    let(:answer) { create(:answer, question: question)  }
+    let(:answer) { create(:answer, question: question, user: user)  }
     
     before { get :edit, params: { id: answer, question_id: question } }
 
@@ -43,9 +42,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
     context 'with valide attributes' do
       it 'create object in database' do 
-        expect { post :create, params: {answer: attributes_for(:answer), question_id: question} }.to change(Answer,:count).by(1)
+        expect { post :create, params: {answer: attributes_for(:answer), question_id: question, user_id: user} }.to change(Answer,:count).by(1)
       end
       it 'redirect in show view' do 
         post :create, params: { answer: attributes_for(:answer), question_id: question } 
@@ -55,11 +55,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalide attributes' do
       it 'does not save answer' do
-        expect { post :create, params: {answer: attributes_for(:answer, :invalid), question_id: question} }.to_not change(Answer,:count)
+        expect { post :create, params: {answer: attributes_for(:answer, :invalid), question_id: question, user_id: user} }.to_not change(Answer,:count)
       end
     
       it 're render new view' do
-        post :create, params: {answer: attributes_for(:answer,:invalid), question_id: question} 
+        post :create, params: {answer: attributes_for(:answer,:invalid), question_id: question, user_id: user} 
         expect(response).to redirect_to assigns(:question)
       end
     end
