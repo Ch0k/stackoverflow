@@ -3,12 +3,14 @@
 <%= link_to 'Edit', edit_question_path(@question) %>
 <% if @question.user == current_user %>
   <%= link_to 'Delete question', question_path(@question),method: :delete %>
-<% end  %>
+<% end %>
 <% @answers.each do |answer| %>
   <p><%= answer.body %>
-  <a data-method="delete" href="/questions/<%= @question.id %>/answers/ <%= answer.id %>">Delete answer</a> 
+  <% if answer.user == current_user %>
+    <a data-method="delete" href="/questions/<%= @question.id %>/answers/<%= answer.id %>">Delete answer</a> 
+  <% end  %>
 <% end %>
-
+<%= render 'shared/errors', resource: @answer %>
 <%= form_with model: [@question, @answer], local: true do |f| %>
   <%= f.label :body %>
   <%= f.text_area :body %>
