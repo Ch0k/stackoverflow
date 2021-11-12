@@ -1,17 +1,14 @@
 class AnswersController < ApplicationController
-  before_action :set_question, only: [:index, :new, :edit, :create, :update]
-  before_action :set_answer, only: [:update, :edit]
+  before_action :authenticate_user!
+  before_action :set_question, only: [:index, :new, :create]
+  before_action :set_answer, only: [:destroy]
 
-  def index
-    @answers = @question.answers
-  end
+  #def new
+  #  @answer = @question.answers.new
+  #end
 
-  def new
-    @answer = @question.answers.new
-  end
-
-  def edit
-  end
+  #def edit
+  #end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -19,21 +16,20 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Answer successfuly created'
     else
-      redirect_to @question
+      render "questions/show"
     end
   end
 
-  def update
-    if @answer.update(answer_params)
-      redirect_to @question
-    else
-      render :edit
-    end
-  end
+  #def update
+  #  if @answer.update(answer_params)
+  #    redirect_to @question
+  #  else
+  #    render :edit
+  #  end
+  #end
 
   def destroy
-    @question = Question.find(params[:question_id])
-    @answer = @question.answers.find(params[:id])
+    #@answer = @question.answers.find(params[:id])
     @answer.destroy
     redirect_to @answer.question, notice: "Answer deleted"
   end
