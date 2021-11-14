@@ -16,6 +16,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Answer successfuly created'
     else
+      @answers = @question.answers
       render "questions/show"
     end
   end
@@ -29,9 +30,12 @@ class AnswersController < ApplicationController
   #end
 
   def destroy
-    #@answer = @question.answers.find(params[:id])
-    @answer.destroy
-    redirect_to @answer.question, notice: "Answer deleted"
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to @answer.question, notice: "Answer deleted"
+    else
+      redirect_to @answer.question, notice: "You are not a author"
+    end
   end
 
   private
