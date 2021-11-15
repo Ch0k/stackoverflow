@@ -17,42 +17,5 @@ feature 'User can see question', %q{
       expect(page).to have_content answer.body
     end
   end
-
-  scenario 'Authenticated User create answer' do
-    sign_in(user)
-    visit question_path(question)
-    expect(page).to have_content question.title
-    expect(page).to have_content question.body
-    answers.each do |answer|
-      expect(page).to have_content answer.body
-    end
-    fill_in 'Body', with: 'new answer answer answer'
-    click_on 'Create answer'
-    expect(page).to have_content 'Answer successfuly created'
-    expect(page).to have_content 'new answer answer answer'
-  end
-
-  scenario 'Authenticated User create answer with errors' do
-    sign_in(user)
-    visit question_path(question)
-    expect(page).to have_content question.title
-    expect(page).to have_content question.body
-    answers.each do |answer|
-      expect(page).to have_content answer.body
-    end
-    fill_in 'Body', with: 'new answer'
-    click_on 'Create answer'
-    expect(page).to have_content 'error'
-  end
-
-  scenario 'Unauthenticated User not see link to create answer' do
-    visit question_path(question)
-    expect(page).to have_content question.title
-    expect(page).to have_content question.body
-    answers.each do |answer|
-      expect(page).to have_content answer.body
-    end
-    expect(page).to_not have_link 'Create answer'
-  end
 end
 
