@@ -3,18 +3,20 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   it {  should validate_presence_of :email  }
   it {  should validate_presence_of :password  }
-  #it { is_expected.to be_author_of(Question) }
+  it { should have_many :questions }
 
-  #let!(:user) { create(:user) }
-  #let(:question) { create(:question, user: user) } 
-  #describe 'author_of?' do
-  #  context 'be author' do
-  #    it { is_expected.to be_author_of(question) }
-  #  end
+  describe 'author_of?' do
+    let(:user) { create(:user) }
+    let(:any_user) { create(:user) }
 
-    #context 'be author' do
-    #  before { question.user_id = user.id }
-    #  it { is_expected.to be_author_of(question) }
-    #end
-  #end
+    it 'user is an author' do
+      question = create(:question, user: user)
+      expect(user).to be_author_of(question)
+    end
+
+    it 'user not an author' do
+      question = create(:question, user: any_user)
+      expect(user).to_not be_author_of(question)
+    end
+  end
 end
