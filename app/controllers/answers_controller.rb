@@ -1,14 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: [:index, :new, :create]
+  before_action :set_question, only: [:create]
   before_action :set_answer, only: [:destroy]
-
-  #def new
-  #  @answer = @question.answers.new
-  #end
-
-  #def edit
-  #end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -21,20 +14,12 @@ class AnswersController < ApplicationController
     end
   end
 
-  #def update
-  #  if @answer.update(answer_params)
-  #    redirect_to @question
-  #  else
-  #    render :edit
-  #  end
-  #end
-
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
       redirect_to @answer.question, notice: "Answer deleted"
     else
-      redirect_to @answer.question, notice: "You are not a author"
+      redirect_to root_path, notice: "You are not a author"
     end
   end
 

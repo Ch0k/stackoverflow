@@ -59,7 +59,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valide attributes' do
       it 'create object in database' do 
-        expect { post :create, params: {question: attributes_for(:question, user_id: user)} }.to change(Question,:count).by(1)
+        expect { post :create, params: {question: attributes_for(:question)} }.to change(Question,:count).by(1)
       end
       it 'redirect in show view' do 
         post :create, params: {question: attributes_for(:question)} 
@@ -117,16 +117,33 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
+  
+    context "user is author of question" do
+      before { login(user) }
+      let!(:question) { create(:question, user: user) } 
+      it 'destroy question in database' do
+        expect{ delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
 
-    let!(:question) { create(:question, user: user) } 
-    it 'destroy question in database' do
-      expect{ delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      it 'redirect to index' do
+        delete :destroy, params: { id: question}
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirect to index' do
-      delete :destroy, params: { id: question}
-      expect(response).to redirect_to questions_path
+    context "user is not author of question" do
+      let(:another_user) { create(:user) }
+      let!(:question) { create(:question, user: user) } 
+      before { login(another_user) }
+
+      it 'do not destroy question in database' do
+        expect{ delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+      end
+
+      it 'redirect to index' do
+        delete :destroy, params: { id: question}
+        expect(response).to redirect_to questions_path
+      end
     end
   end
 end
