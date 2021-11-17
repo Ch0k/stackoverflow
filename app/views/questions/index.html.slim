@@ -1,4 +1,5 @@
-= link_to 'Ask question', new_question_path
+= link_to 'Ask question', new_question_path, class: 'mb-2'
 - @questions.each do |question|
-  p = question.title
+  h4 = question.title
   = link_to 'Show', question_path(question)
+  p = question.body

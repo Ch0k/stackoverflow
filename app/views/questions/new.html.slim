@@ -1,8 +1,9 @@
-= render 'shared/errors', resource: @question
-
-= form_with model: @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Ask question'
+.question_errors
+  = render 'shared/errors', resource: @question
+.new_question
+  = form_with model: @question, local: true do |f|
+    H4 = f.label :title
+    p = f.text_field :title
+    h5 = f.label :body
+    p = f.text_area :body
+    = f.submit 'Ask question'
