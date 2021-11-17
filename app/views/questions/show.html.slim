@@ -1,0 +1,15 @@
+= @question.title
+= @question.body
+- if current_user && current_user.author_of?(@question)
+  = link_to 'Edit', edit_question_path(@question)
+  = link_to 'Delete question', question_path(@question), method: :delete
+- @answers.each do |answer|
+  - if answer.persisted?
+    p = answer.body
+    - if current_user && current_user.author_of?(answer)
+      = button_to 'Delete answer', answer_path(answer), method: :delete
+== render 'shared/errors', resource: @answer
+= form_with model: [@question, @answer], local: true do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.submit 'Create answer'
