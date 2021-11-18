@@ -29,7 +29,7 @@ feature 'User can create answer', %q{
       expect(page).to have_content 'new answer answer answer'
     end
 
-    scenario 'create answer with errors' do
+    scenario 'create answer with errors', js: true do
       expect(page).to have_content question.title
       expect(page).to have_content question.body
       answers.each do |answer|

@@ -80,40 +80,83 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+  
+    describe 'Author of question' do
+      before { login(user) }
+      context 'with valide attributes' do
+        it 'assing the requested question to @question' do 
+          patch :update, params: { id: question, question: attributes_for(:question)}
+          expect(assigns(:question)).to eq question
+        end 
 
-    context 'with valide attributes' do
+        it 'change question attribute' do 
+          patch :update, params: { id: question, question: {title: 'new title', body: 'new body'}}
+          question.reload
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+        it 'redirect to update question' do 
+          patch :update, params: { id: question, question: attributes_for(:question)}
+          expect(response).to redirect_to question
+        end
+      end
+
+      context 'with invalide attributes' do
+
+        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid)} }
+        it 'does not checnge question' do
+          question.reload
+          expect(question.title).to eq 'MyString'
+          expect(question.body).to eq 'MyText'
+        end
+
+        it 're render edit view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    describe "User not a author of question" do
+      let!(:another_user) { create(:user) } 
+      before { login(another_user) }
+      context 'with valide attributes' do
+
+        it 'assing the requested question to @question' do 
+          patch :update, params: { id: question, question: attributes_for(:question)}
+          expect(assigns(:question)).to eq question
+        end
+        
+        it 'change question attribute' do 
+          patch :update, params: { id: question, question: {title: 'new title', body: 'new body'}}
+          question.reload
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 'redirect to update question' do 
+          patch :update, params: { id: question, question: attributes_for(:question)}
+          expect(response).to redirect_to questions_path
+        end 
+      end
+    end
+    context 'Not authenticate user update quesiton' do
       it 'assing the requested question to @question' do 
         patch :update, params: { id: question, question: attributes_for(:question)}
-        expect(assigns(:question)).to eq question
-      end 
-
+        expect(assigns(:question)).to_not eq question
+      end
+      
       it 'change question attribute' do 
         patch :update, params: { id: question, question: {title: 'new title', body: 'new body'}}
         question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
+
       it 'redirect to update question' do 
         patch :update, params: { id: question, question: attributes_for(:question)}
-        expect(response).to redirect_to question
-      end
+        expect(response).to redirect_to new_user_session_path
+      end 
     end
-
-    context 'with invalide attributes' do
-
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid)} }
-      it 'does not checnge question' do
-        question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
-      end
-
-      it 're render edit view' do
-        expect(response).to render_template :edit
-      end
-    end
-
   end
 
   describe 'DELETE #destroy' do

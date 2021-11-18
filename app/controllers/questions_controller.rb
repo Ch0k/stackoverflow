@@ -13,10 +13,14 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Question updated'
-    else 
-      render :edit
+    if current_user.author_of?(@question)
+      if @question.update(question_params)
+        redirect_to @question, notice: 'Question updated'
+      else 
+        render :edit
+      end
+    else
+      redirect_to questions_path, notice: "You are not a author"
     end
   end
 
@@ -25,8 +29,9 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answers = @question.answers
-    @answer = @question.answers.build
+    #@answers = @question.answers
+    #@answer = @question.answers.build
+    @answer = Answer.new
   end
 
   def new

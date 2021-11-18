@@ -24,6 +24,8 @@ _ujs["default"].start();
 
 _turbolinks["default"].start();
 
-ActiveStorage.start(); //= require jquery3
+ActiveStorage.start();
+
+require("form_inline"); //= require jquery3
 //= require popper
 //= require bootstrap
