@@ -5,4 +5,5 @@
   = f.text_field :title
   = f.label :body
   = f.text_area :body
+  = f.collection_select(:best_answer, :best_answer_id, @question.answers, :id, :body)
   = f.submit 'Update question'
