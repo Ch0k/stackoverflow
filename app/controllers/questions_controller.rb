@@ -41,6 +41,12 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    if current_user.author_of?(@question)
+      render :edit
+    else
+      redirect_to @question
+      flash[:notice] = "You are not a author"
+    end
   end
 
   def destroy

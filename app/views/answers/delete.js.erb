@@ -1,0 +1,7 @@
+$('.link-delete').bind('ajax:beforeSend', function() {
+  $('.alert').show();
+});
+
+$('.link-delete').bind('ajax:complete', function() {
+  $('.alert').hide();
+});

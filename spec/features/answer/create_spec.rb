@@ -17,15 +17,16 @@ feature 'User can create answer', %q{
       visit question_path(question)
     end
 
-    scenario 'create answer' do
+    scenario 'create answer', js: true do
       expect(page).to have_content question.title
       expect(page).to have_content question.body
       answers.each do |answer|
         expect(page).to have_content answer.body
       end
-      fill_in 'Body', with: 'new answer answer answer'
-      click_on 'Create answer'
-      expect(page).to have_content 'Answer successfuly created'
+      within '.new_answer' do
+        fill_in 'Body', with: 'new answer answer answer'
+        click_on 'Create answer'
+      end
       expect(page).to have_content 'new answer answer answer'
     end
 

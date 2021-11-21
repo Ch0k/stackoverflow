@@ -6,8 +6,9 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    @answer.save
-    #flash[:notice] = 'Answer created!'
+    if @answer.save
+      flash[:notice] = 'Answer successfuly created'
+    end
   end
 
   def destroy
@@ -20,8 +21,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
-    @question = @answer.question
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+      @question = @answer.question
+    else
+      redirect_to root_path, notice: "You are not a author"
+    end
   end
 
   private

@@ -48,7 +48,8 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assing the requested question to @question' do 
       expect(assigns(:question)).to eq question
-    end 
+    end
+     
     it 'renders edit view' do
       expect(response).to render_template :edit
     end

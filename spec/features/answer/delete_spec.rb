@@ -8,7 +8,7 @@ feature 'User and author of answer can delete answer', %q{
   given!(:answer) { create(:answer, user: user, question: question) }
   given(:another_user) { create(:user) }
   
-  scenario 'User and author can delete answer' do
+  scenario 'User and author can delete answer', js: true do
     sign_in(user)
     visit question_path(question)
     expect(page).to have_content answer.body
