@@ -11,10 +11,6 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+require("jquery")
 require("answers") 
 
-require('jquery')
-require('popper')
-require('bootstrap')
-window.jQuery = $;
-window.$ = $;

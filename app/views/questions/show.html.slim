@@ -4,11 +4,17 @@
 .question_body
   h5 Question title
   p = @question.body
-- if current_user && current_user.author_of?(@question)
-  = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
-  = link_to 'Delete question', question_path(@question), method: :delete, class: 'mr-2'
+.edit_question
+  - if current_user && current_user.author_of?(@question)
+    = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
+    = link_to 'Delete question', question_path(@question), method: :delete, class: 'mr-2'
+.best_answer
+  h5 Best answer
+  - if @best_answer.present?
+    p = @best_answer.body
 .answers
-  = render @question.answers
+  h5 Answers:
+  = render @other_answers
 .answer_errors
   == render 'shared/errors', resource: @answer
 .new_answer

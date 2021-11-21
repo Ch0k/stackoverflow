@@ -4,8 +4,9 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: [:destroy, :update]
 
   def create
-    @answer = @question.answers.create(answer_params)
+    @answer = @question.answers.new(answer_params)
     @answer.user = current_user
+    @answer.save
     #flash[:notice] = 'Answer created!'
   end
 

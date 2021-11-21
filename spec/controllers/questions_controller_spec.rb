@@ -84,6 +84,8 @@ RSpec.describe QuestionsController, type: :controller do
     describe 'Author of question' do
       before { login(user) }
       context 'with valide attributes' do
+        let(:anwer) { create(:answer, user: user, question: question) }
+
         it 'assing the requested question to @question' do 
           patch :update, params: { id: question, question: attributes_for(:question)}
           expect(assigns(:question)).to eq question
@@ -95,9 +97,16 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq 'new title'
           expect(question.body).to eq 'new body'
         end
+
         it 'redirect to update question' do 
           patch :update, params: { id: question, question: attributes_for(:question)}
           expect(response).to redirect_to question
+        end
+
+        it 'select best answer' do
+          patch :update, params: { id: question, question: {  best_answer_id: question.answers.first } }
+          question.reload
+          expect(question.best_answer).to eq question.answers.first
         end
       end
 

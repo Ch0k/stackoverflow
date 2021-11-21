@@ -14,11 +14,13 @@ html
 
   body
     = render 'layouts/navbar' 
-    p class="notice"
-      = notice
-    p class="alert"
-      = alert
     .container
+      - if flash[:notice]
+        .div class="alert alert-warning" role="alert"
+          = notice
+      - if flash[:alert]   
+        .div class="alert alert-dark" role="alert"
+          = alert
       = yield
 
 

@@ -31,7 +31,9 @@ class QuestionsController < ApplicationController
   def show
     #@answers = @question.answers
     #@answer = @question.answers.build
+    @best_answer = @question.best_answer
     @answer = Answer.new
+    @other_answers = @question.answers.where.not(id: @question.best_answer_id)
   end
 
   def new
@@ -57,7 +59,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, :best_answer_id)
   end
 
 end
