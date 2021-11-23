@@ -13,10 +13,14 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Question updated'
-    else 
-      render :edit
+    if current_user.author_of?(@question)
+      if @question.update(question_params)
+        redirect_to @question, notice: 'Question updated'
+      else 
+        render :edit
+      end
+    else
+      redirect_to questions_path, notice: "You are not a author"
     end
   end
 
@@ -25,8 +29,11 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answers = @question.answers
-    @answer = @question.answers.build
+    #@answers = @question.answers
+    #@answer = @question.answers.build
+    @best_answer = @question.best_answer
+    @answer = Answer.new
+    @other_answers = @question.answers.where.not(id: @question.best_answer_id)
   end
 
   def new
@@ -34,6 +41,12 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    if current_user.author_of?(@question)
+      render :edit
+    else
+      redirect_to @question
+      flash[:notice] = "You are not a author"
+    end
   end
 
   def destroy
@@ -52,7 +65,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, :best_answer_id)
   end
 
 end

@@ -4,6 +4,8 @@ html
     title Stackoverflow
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     = stylesheet_link_tag    "application", media: 'all', 'data-turbolinks-track' => true
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    /!= javascript_include_tag 'application'
     = csrf_meta_tags
     = csp_meta_tag
     script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"
@@ -11,12 +13,15 @@ html
 
 
   body
-    p class="notice"
-      = notice
-    p class="alert"
-      = alert
     = render 'layouts/navbar' 
-    = yield
+    .container
+      - if flash[:notice]
+        .div class="alert alert-warning" role="alert"
+          = notice
+      - if flash[:alert]   
+        .div class="alert alert-dark" role="alert"
+          = alert
+      = yield
 
 
 

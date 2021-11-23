@@ -14,7 +14,7 @@ feature 'User can edit question', %q{
       visit question_path(question)
       expect(page).to have_content question.title
       click_on 'Edit'
-    end  
+    end
 
     scenario 'User author edit question' do
       fill_in 'Title', with: 'new title'

@@ -19,7 +19,6 @@ feature 'User can sign in', %q{
     fill_in 'Email', with: 'wrong@test.com'
     fill_in 'Password', with: '123456'
     click_on 'Log in'
-    #save_and_open_page
     expect(page).to have_content 'Invalid Email or password.'
   end
 end

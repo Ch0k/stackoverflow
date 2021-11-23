@@ -1,8 +1,11 @@
-= render 'shared/errors', resource: @question
+.question_errors
+  = render 'shared/errors', resource: @question
+.edit_question
+  = form_with model: @question do |f|
+    h4 = f.label :title
+    p = f.text_field :title
+    h5 = f.label :body
+    p = f.text_area :body
+    p = f.select(:best_answer_id, @question.answers.collect {|u| [u.body, u.id]} ) 
+    = f.submit 'Update question'
 
-= form_with model: @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Update question'
