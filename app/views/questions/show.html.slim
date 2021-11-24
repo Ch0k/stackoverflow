@@ -4,6 +4,9 @@
 .question_body
   h5 Question title
   p = @question.body
+  - if @question.files.attached?
+  - @question.files.each do |file|
+    p= link_to file.filename.to_s, url_for(file)
 .edit_question
   - if current_user && current_user.author_of?(@question)
     = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
