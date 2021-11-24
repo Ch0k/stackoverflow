@@ -24,4 +24,7 @@
   = form_with model: [@question, @answer], local: false do |f|
     h5 = f.label :body
     p = f.text_area :body
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true
     = f.submit 'Create answer'

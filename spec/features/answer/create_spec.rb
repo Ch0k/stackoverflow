@@ -40,6 +40,17 @@ feature 'User can create answer', %q{
       click_on 'Create answer'
       expect(page).to have_content 'error'
     end
+
+    scenario 'asks a question with attached file',js: true do
+      within '.new_answer' do
+        fill_in 'Body', with: 'text text text'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      end
+      click_on 'Create answer'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
   end
 
   scenario 'Unauthenticated User not see link to create answer' do
