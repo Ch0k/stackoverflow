@@ -58,6 +58,12 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def delete_file_attachment
+    @file = ActiveStorage::Attachment.find(params[:id])
+    @file.purge
+    redirect_back fallback_location: root_path, notice: "Delete success"
+  end
+
   private
 
   def load_question
