@@ -1,14 +1,19 @@
 - if answer.persisted?
   p = answer.body
   - if answer.files.attached?
-  - answer.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
+    - answer.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
   - if current_user && current_user.author_of?(answer)
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'link-delete'
 = form_with model: answer, local: false, class: 'hidden edit_answer', html: { id: "edit-answer-#{answer.id}" } do |f|
   h5 = f.label :body
   p = f.text_area :body
+  - if answer.files.attached?
+    - f.object.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
+      - if current_user && current_user.author_of?(answer)
+        = link_to 'Remove', delete_file_attachment_answer_url(file), method: :delete, remote: true, class: 'link-delete'
   p
     = f.label :files
     = f.file_field :files, multiple: true  
