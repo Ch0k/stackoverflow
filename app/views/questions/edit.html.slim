@@ -8,7 +8,7 @@
     p = f.text_area :body
     p
       = f.label :files
-      = f.file_field :files, multiple: true
+      = f.file_field :files, multiple: true, direct_upload: true
     p = f.select(:best_answer_id, @question.answers.collect {|u| [u.body, u.id]} ) 
     = f.submit 'Update question'
 

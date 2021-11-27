@@ -16,5 +16,5 @@
         = link_to 'Remove', delete_file_attachment_answer_url(file), method: :delete, remote: true, class: 'link-delete'
   p
     = f.label :files
-    = f.file_field :files, multiple: true  
+    = f.file_field :files, multiple: true, direct_upload: true
   = f.submit 'Update answer'
