@@ -9,15 +9,18 @@ feature 'User can edit his answer', %q{
   given!(:user) { create(:user) }
   given!(:another_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Unauthenticated can not edit answer' do
-    visit question_path(question)
+  describe 'Unauthenticated can not edit answer' do
+    given!(:answer) { create(:answer, question: question, user: user) }
+    scenario 'Unauthenticated can not edit answer' do
+      visit question_path(question)
 
-    expect(page).to_not have_link 'Edit'
+      expect(page).to_not have_link 'Edit'
+    end
   end
-
   describe 'Authenticated user' do
+    given!(:answer) { create(:answer, question: question, user: user) }
+
     scenario 'edits his answer', js: true do
       sign_in(user)
       visit question_path(question)
@@ -53,6 +56,40 @@ feature 'User can edit his answer', %q{
       within '.answers' do
         expect(page).to_not have_link 'Edit'
       end
+    end
+  end
+
+  describe 'Authenticated user edit answer with files' do
+    given!(:answer_with_file) { create(:answer, :with_file, question: question, user: user) }
+    
+    scenario 'edit file in his answer ', js: true do
+      sign_in(user)
+      visit question_path(question)
+      within '.answers' do
+        click_on 'Edit' 
+      end
+
+      within '.edit_answer' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+        click_on 'Update answer'
+      end
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
+
+    scenario 'delete file in his answer', js: true do
+      sign_in(user)
+      visit question_path(question)
+      within '.answers' do
+        click_on 'Edit' 
+        expect(page).to have_link 'test.txt'
+      end
+
+      within '.edit_answer' do
+        click_on 'Remove'
+      end
+      expect(page).to_not have_link 'test.txt'
     end
   end
 end

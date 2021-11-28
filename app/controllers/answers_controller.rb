@@ -29,6 +29,12 @@ class AnswersController < ApplicationController
     end
   end
 
+  def delete_file_attachment
+    @file = ActiveStorage::Attachment.find(params[:id])
+    @file.purge
+    redirect_back fallback_location: root_path, notice: "Delete success"
+  end
+
   private
 
   def set_question
@@ -36,10 +42,10 @@ class AnswersController < ApplicationController
   end
 
   def set_answer     
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, files: [])
   end
 end

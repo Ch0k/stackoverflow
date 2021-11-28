@@ -1,3 +1,4 @@
+include ActionDispatch::TestProcess
 FactoryBot.define do
   factory :question do
     #association :best_answer, factory: :answer
@@ -8,6 +9,16 @@ FactoryBot.define do
 
     trait :invalid do
       title { nil }
+    end
+
+
+    trait :with_file do
+      title { "MyString with file" }
+      body { "MyText with file" }
+      after :create do |question|
+        file = Rack::Test::UploadedFile.new('spec/factories/test.txt', 'text/plain') 
+        question.files.attach(file)
+      end
     end
   end
 end
