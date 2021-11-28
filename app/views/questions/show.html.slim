@@ -11,6 +11,11 @@
       = link_to 'Remove',  delete_file_attachment_question_url(file),
                     method: :delete,
                     data: { confirm: 'Are you sure?' }
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
 .edit_question
   - if current_user && current_user.author_of?(@question)
     = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
@@ -31,4 +36,13 @@
     p
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        p
+          = l.label :name, 'Link name'
+          = l.text_field :name
+        p
+          = l.label :url
+          = l.text_field :url
     = f.submit 'Create answer'
