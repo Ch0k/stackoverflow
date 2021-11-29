@@ -12,5 +12,6 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 require("jquery")
-require("answers") 
-
+require("answers")
+require("direct_uploads") 
+require("@nathanvda/cocoon")
