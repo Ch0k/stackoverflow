@@ -7,8 +7,9 @@ feature 'User can add links to question', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
-  given(:gist_url2) { 'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c' }
+  given(:gist_url) { 'https://ZZS.ru' }
+  given(:gist_url2) { 'https://google.com' }
+  given(:gist_url3) {'123'}
 
   scenario 'User adds link when asks question' do
     sign_in(user)
@@ -25,6 +26,21 @@ feature 'User can add links to question', %q{
     expect(page).to have_link 'My gist', href: gist_url
   end
 
+  scenario 'User adds non valide  link when give an answer' do
+    sign_in(user)
+    visit new_question_path
+
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text text text'
+
+    fill_in 'Link name', with: 'My gist unvalide link'
+    fill_in 'Url', with: gist_url3
+
+    click_on 'Ask question'
+
+    expect(page).to_not have_link 'My gist unvalide link', href: gist_url3
+  end
+
   scenario 'User adds links when asks question' do
     sign_in(user)
     visit new_question_path
@@ -37,11 +53,12 @@ feature 'User can add links to question', %q{
 
     click_on 'add link'
     
-    fill_in 'Link name', with: 'My gist2'
-    fill_in 'Url', with: gist_url2
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My gist2'
+      fill_in 'Url', with: gist_url2
+    end
 
-    click_on 'Ask'
-
+    click_on 'Ask question'
     expect(page).to have_link 'My gist', href: gist_url
     expect(page).to have_link 'My gist2', href: gist_url2
   end

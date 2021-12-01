@@ -10,6 +10,7 @@
   - if current_user && current_user.author_of?(answer)
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'link-delete'
+  .line
 = form_with model: answer, local: false, class: 'hidden edit_answer', html: { id: "edit-answer-#{answer.id}" } do |f|
   h5 = f.label :body
   p = f.text_area :body
@@ -21,4 +22,10 @@
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        = render 'link_fields', f: l
+      .links
+        = link_to_add_association 'add link', f, :links
   = f.submit 'Update answer'

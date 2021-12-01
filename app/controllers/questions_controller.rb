@@ -74,7 +74,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, :best_answer_id, files: [],
-                                                         links_attributes: [:name, :url])
+                                                         links_attributes: [:id, :name, :url, :_destroy])
   end
 
 end
