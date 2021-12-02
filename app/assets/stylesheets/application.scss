@@ -1,6 +1,7 @@
 @import "bootstrap";
 @import "common";
 @import "direct_uploads";
+
 .answers-container {
   background: lightgoldenrodyellow;
   margin-left: 40px;
@@ -13,4 +14,7 @@
   border-left-width: 10px;
   border-right-width: 10px;
   border-color: red
+}
+.badge {
+  color: black;
 }
