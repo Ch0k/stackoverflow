@@ -23,9 +23,8 @@
   - if current_user && current_user.author_of?(@question)
     - if @question.badge.present?
       p = @question.badge.name
-      /- if @question.badge.image.present?
-        = link_to @question.badge.image.filename, url_for(@question.badge.image)
-
+      - if @question.badge.image.present?
+        = image_tag @question.badge.image, size: '50x50'
 
 .edit_question
   - if current_user && current_user.author_of?(@question)
