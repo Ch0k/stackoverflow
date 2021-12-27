@@ -3,3 +3,6 @@
   h4 = question.title
   = link_to 'Show', question_path(question)
   p = question.body
+  = question.votes.count
+  = link_to vote_question_url(question)
+    = image_tag 'like.png', class: 'like'

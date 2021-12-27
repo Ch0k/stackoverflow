@@ -6,10 +6,12 @@ Rails.application.routes.draw do
     resources :answers, shallow: true, only: [:create, :update, :destroy] do
       member do
         delete :delete_file_attachment
+        get :vote
       end
     end
     member do
       delete :delete_file_attachment
+      get :vote
     end
   end
 end
