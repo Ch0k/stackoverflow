@@ -9,4 +9,20 @@
     p
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        = render 'link_fields', f: l
+      .links
+        = link_to_add_association 'add link', f, :links
+    .add_badge
+      = f.fields_for :badge do |b|
+        = f.label :name, 'Badge name'
+        = b.text_field :name
+      p
+        = f.label :image, 'Image'
+        = f.file_field :image
+
+      /.links
+        = link_to_add_association 'add badge', f, :badge
     = f.submit 'Ask question'

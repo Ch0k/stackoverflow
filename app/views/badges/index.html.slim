@@ -1,0 +1,7 @@
+- current_user.badges.each do |badge|
+  h4 Badge name: 
+  p = badge.name
+  - if badge.image.present?
+    = image_tag badge.image, size: '50x50'
+  h5 Question title: 
+  p = badge.question.title
