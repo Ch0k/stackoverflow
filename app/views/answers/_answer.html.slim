@@ -8,6 +8,20 @@
     - answer.files.each do |file|
       p= link_to file.filename.to_s, url_for(file)
   - if current_user && current_user.author_of?(answer)
+    .vote
+      = answer.votes.count
+      = image_tag 'like.png', class: 'like'
+      = answer.unvotes.count
+      = image_tag 'like.png', class: 'unlike'
+  - else
+    .vote
+      = answer.votes.count
+      = link_to vote_answer_url(answer)
+        = image_tag 'like.png', class: 'like'
+      = answer.unvotes.count
+      = link_to unvote_answer_url(answer)
+        = image_tag 'like.png', class: 'unlike'
+  - if current_user && current_user.author_of?(answer)
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'link-delete'
   .line

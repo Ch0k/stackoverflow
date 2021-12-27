@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
-  before_action :set_answer, only: [:destroy, :update]
+  before_action :set_answer, only: [:destroy, :update, :vote, :unvote]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -33,6 +33,16 @@ class AnswersController < ApplicationController
     @file = ActiveStorage::Attachment.find(params[:id])
     @file.purge
     redirect_back fallback_location: root_path, notice: "Delete success"
+  end
+
+  def vote
+    Vote.create!(votable_type: 'Answer', votable_id: @answer.id, user_id: current_user.id)
+    redirect_back fallback_location: root_path, notice: "Vote success"
+  end
+
+  def unvote
+    Unvote.create!(unvotable_type: 'Answer', unvotable_id: @answer.id, user_id: current_user.id)
+    redirect_back fallback_location: root_path, notice: "Unvote success"
   end
 
   private

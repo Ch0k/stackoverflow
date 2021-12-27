@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_27_025945) do
+ActiveRecord::Schema.define(version: 2021_12_27_033842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,16 @@ ActiveRecord::Schema.define(version: 2021_12_27_025945) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "unvotes", force: :cascade do |t|
+    t.string "unvotable_type"
+    t.bigint "unvotable_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["unvotable_type", "unvotable_id"], name: "index_unvotes_on_unvotable"
+    t.index ["user_id"], name: "index_unvotes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -113,5 +123,6 @@ ActiveRecord::Schema.define(version: 2021_12_27_025945) do
   add_foreign_key "badges", "users"
   add_foreign_key "questions", "answers", column: "best_answer_id"
   add_foreign_key "questions", "users"
+  add_foreign_key "unvotes", "users"
   add_foreign_key "votes", "users"
 end

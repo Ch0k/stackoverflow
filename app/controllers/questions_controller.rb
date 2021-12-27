@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote, :unvote]
 
   def create
     @question = Question.new(question_params)
@@ -68,8 +68,13 @@ class QuestionsController < ApplicationController
   end
 
   def vote
-    @vote = Vote.create!(votable_type: 'Question', votable_id: @question.id, user_id: current_user.id)
+    Vote.create!(votable_type: 'Question', votable_id: @question.id, user_id: current_user.id)
     redirect_back fallback_location: root_path, notice: "Vote success"
+  end
+
+  def unvote
+    Unvote.create!(unvotable_type: 'Question', unvotable_id: @question.id, user_id: current_user.id)
+    redirect_back fallback_location: root_path, notice: "Unvote success"
   end
 
   private

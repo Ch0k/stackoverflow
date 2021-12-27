@@ -7,11 +7,13 @@ Rails.application.routes.draw do
       member do
         delete :delete_file_attachment
         get :vote
+        get :unvote
       end
     end
     member do
       delete :delete_file_attachment
       get :vote
+      get :unvote
     end
   end
 end
