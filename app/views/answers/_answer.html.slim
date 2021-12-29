@@ -13,13 +13,25 @@
       = image_tag 'like.png', class: 'like'
       = answer.unvotes.count
       = image_tag 'like.png', class: 'unlike'
-  - else
+  - elsif current_user
     .vote
       = answer.votes.count
-      = link_to vote_answer_url(answer)
+      - if answer.voted?(current_user)
+        = link_to delete_vote_answer_url(answer)
+          = image_tag 'like.png', class: 'like like-green'
+      - elsif !(answer.unvoted?(current_user))
+        = link_to vote_answer_url(answer)
+          = image_tag 'like.png', class: 'like'
+      - else
         = image_tag 'like.png', class: 'like'
       = answer.unvotes.count
-      = link_to unvote_answer_url(answer)
+      - if answer.unvoted?(current_user)
+        = link_to delete_unvote_answer_url(answer)
+          = image_tag 'like.png', class: 'unlike like-green'
+      - elsif !(answer.voted?(current_user))
+        = link_to unvote_answer_url(answer)
+          = image_tag 'like.png', class: 'unlike'
+      - else
         = image_tag 'like.png', class: 'unlike'
   - if current_user && current_user.author_of?(answer)
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

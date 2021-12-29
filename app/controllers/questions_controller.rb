@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote, :unvote]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote, :unvote, :delete_vote, :delete_unvote]
 
   def create
     @question = Question.new(question_params)
@@ -75,6 +75,16 @@ class QuestionsController < ApplicationController
   def unvote
     Unvote.create!(unvotable_type: 'Question', unvotable_id: @question.id, user_id: current_user.id)
     redirect_back fallback_location: root_path, notice: "Unvote success"
+  end
+
+  def delete_vote
+    @question.votes.where(user_id: current_user.id).destroy_all
+    redirect_back fallback_location: root_path, notice: "Vote delete"
+  end
+
+  def delete_unvote
+    @question.unvotes.where(user_id: current_user.id).destroy_all
+    redirect_back fallback_location: root_path, notice: "Unvote delete"
   end
 
   private

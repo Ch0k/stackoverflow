@@ -11,4 +11,12 @@ class Answer < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank
 
   validates :body, presence: true, length: { minimum: 15 }
+
+  def voted?(user)
+    self.votes.where(user_id: user.id).count >= 1
+  end
+
+  def unvoted?(user)
+    self.unvotes.where(user_id: user.id).count >= 1
+  end
 end
