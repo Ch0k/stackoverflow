@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  include Voted
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
   before_action :set_answer, only: [:destroy, :update, :vote, :unvote, :delete_unvote, :delete_vote]
@@ -33,26 +34,6 @@ class AnswersController < ApplicationController
     @file = ActiveStorage::Attachment.find(params[:id])
     @file.purge
     redirect_back fallback_location: root_path, notice: "Delete success"
-  end
-
-  def vote
-    Vote.create!(votable_type: 'Answer', votable_id: @answer.id, user_id: current_user.id)
-    redirect_back fallback_location: root_path, notice: "Vote success"
-  end
-
-  def unvote
-    Unvote.create!(unvotable_type: 'Answer', unvotable_id: @answer.id, user_id: current_user.id)
-    redirect_back fallback_location: root_path, notice: "Unvote success"
-  end
-
-  def delete_vote
-    @answer.votes.where(user_id: current_user.id).destroy_all
-    redirect_back fallback_location: root_path, notice: "Vote delete"
-  end
-
-  def delete_unvote
-    @answer.unvotes.where(user_id: current_user.id).destroy_all
-    redirect_back fallback_location: root_path, notice: "Unvote delete"
   end
 
   private
