@@ -5,23 +5,58 @@ module Voted
   end
 
   def vote
-    Vote.create!(votable_type: model_klass, votable_id: @votable.id, user_id: current_user.id)
-    redirect_back fallback_location: root_path, notice: "Vote success"
+    #if voted?(user)
+    #else
+      Vote.create!(votable_type: model_klass, votable_id: @votable.id, user_id: current_user.id)
+      respond_to do |format|
+        format.json { render json: {
+                                      id: @votable.id,
+                                      votes: @votable.votes.count,
+                                      rating: @votable.votes.count - @votable.unvotes.count
+                                    } 
+                                  }
+      end
+    #end
   end
 
   def delete_vote
     @votable.votes.where(user_id: current_user.id).destroy_all
-    redirect_back fallback_location: root_path, notice: "Vote delete"
+    respond_to do |format|
+      format.json { render json: {
+                                    id: @votable.id,
+                                    votes: @votable.votes.count,
+                                    rating: @votable.votes.count - @votable.unvotes.count
+                                  } 
+        }
+    end
   end
 
   def unvote
     Unvote.create!(unvotable_type: model_klass, unvotable_id: @votable.id, user_id: current_user.id)
-    redirect_back fallback_location: root_path, notice: "Unvote success"
+    respond_to do |format|
+      format.json { render json: { 
+                                    id: @votable.id,
+                                    votes: @votable.votes.count,
+                                    unvotes: @votable.unvotes.count,
+                                    rating: @votable.votes.count - @votable.unvotes.count
+
+        }
+      }
+    end
   end
 
   def delete_unvote
     @votable.unvotes.where(user_id: current_user.id).destroy_all
-    redirect_back fallback_location: root_path, notice: "Unvote delete"
+    respond_to do |format|
+      format.json { render json: {
+                                    id: @votable.id,
+                                    votes: @votable.votes.count,
+                                    unvotes: @votable.unvotes.count,
+                                    rating: @votable.votes.count - @votable.unvotes.count
+
+        }
+      }
+    end
   end
 
   private 
