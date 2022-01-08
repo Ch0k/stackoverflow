@@ -1,0 +1,52 @@
+.vote
+  - if current_user && current_user.author_of?(resource)
+    = resource.votes.count
+    = image_tag 'like.png', class: 'like'
+    = resource.votes.count - resource.unvotes.count
+    = resource.unvotes.count
+    = image_tag 'like.png', class: 'unlike'
+  - elsif current_user
+    div class = "question-#{resource.id}"
+      div class = "vote"
+        = resource.votes.count
+      div class = "vote-count"
+      div class = "vote-link"
+        - if resource.voted?(current_user)
+          = link_to polymorphic_path(resource, action: :delete_vote), remote: true, data: { type: :json }, class: 'delete-voting'
+            = image_tag 'like.png', class: 'like like-green delete-link'
+          = link_to polymorphic_path(resource, action: :vote), remote: true,  data: { type: :json }, class: 'voting'
+            = image_tag 'like.png', class: 'like add-link hidden'
+        - elsif resource.unvoted?(current_user)
+          = link_to polymorphic_path(resource, action: :delete_vote), remote: true, data: { type: :json }, class: 'delete-voting'
+            = image_tag 'like.png', class: 'like like-green delete-link hidden'
+          = link_to polymorphic_path(resource, action: :vote), remote: true, data: { type: :json }, class: 'voting disabled'
+            = image_tag 'like.png', class: 'like add-link'
+        - else
+          = link_to polymorphic_path(resource, action: :delete_vote), remote: true, data: { type: :json }, class: 'delete-voting'
+            = image_tag 'like.png', class: 'like like-green hidden delete-link'
+          = link_to polymorphic_path(resource, action: :vote), remote: true, data: { type: :json }, class: 'voting'
+            = image_tag 'like.png', class: 'like add-link'
+      div class = 'rating'
+        = resource.votes.count - resource.unvotes.count
+      div class = 'new-rating'
+      div class = "unvote"
+        = resource.unvotes.count
+      div class = "unvote-count"
+      div class = "unvote-link"
+        - if resource.unvoted?(current_user)
+          -# = link_to delete_unvote_question_url(resource), remote: true, data: { type: :json }, class: 'delete-unvoting'
+          = link_to polymorphic_path(resource, action: :delete_unvote), remote: true, data: { type: :json }, class: 'delete-unvoting'  
+            = image_tag 'like.png', class: 'unlike like-green delete-unvote-link'
+          -# = link_to unvote_question_url(resource), remote: true, data: { type: :json }, class: 'unvoting'
+          = link_to polymorphic_path(resource, action: :unvote), remote: true, data: { type: :json }, class: 'unvoting'  
+            = image_tag 'like.png', class: 'unlike add-unvote-link hidden'
+        - elsif resource.voted?(current_user)
+          = link_to polymorphic_path(resource, action: :delete_unvote), remote: true, data: { type: :json }, class: 'delete-unvoting'
+            = image_tag 'like.png', class: 'unlike like-green delete-unvote-link hidden'
+          = link_to polymorphic_path(resource, action: :unvote), remote: true, data: { type: :json }, class: 'unvoting disabled'
+            = image_tag 'like.png', class: 'unlike add-unvote-link'
+        - else 
+          = link_to polymorphic_path(resource, action: :delete_unvote), remote: true, data: { type: :json }, class: 'delete-unvoting'
+            = image_tag 'like.png', class: 'unlike like-green delete-unvote-link hidden'
+          = link_to polymorphic_path(resource, action: :unvote), remote: true, data: { type: :json }, class: 'unvoting'
+            = image_tag 'like.png', class: 'unlike add-unvote-link'

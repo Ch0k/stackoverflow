@@ -3,53 +3,5 @@
   h4 = question.title
   = link_to 'Show', question_path(question)
   p = question.body
-  .vote
-    - if current_user && current_user.author_of?(question)
-      = question.votes.count
-      = image_tag 'like.png', class: 'like'
-      = question.votes.count - question.unvotes.count
-      = question.unvotes.count
-      = image_tag 'like.png', class: 'unlike'
-    - elsif current_user
-      div class = "question-#{question.id}"
-        div class = "vote"
-          = question.votes.count
-        div class = "vote-count"
-        div class = "vote-link"
-          - if question.voted?(current_user)
-            = link_to delete_vote_question_url(question), remote: true, data: { type: :json }, class: 'delete-voting'
-              = image_tag 'like.png', class: 'like like-green delete-link'
-            = link_to vote_question_url(question), remote: true,  data: { type: :json }, class: 'voting'
-              = image_tag 'like.png', class: 'like add-link hidden'
-          - elsif question.unvoted?(current_user)
-            = link_to delete_vote_question_url(question), remote: true, data: { type: :json }, class: 'delete-voting'
-              = image_tag 'like.png', class: 'like like-green delete-link hidden'
-            = link_to vote_question_url(question), remote: true,  data: { type: :json }, class: 'voting disabled'
-              = image_tag 'like.png', class: 'like add-link'
-          - else
-            = link_to delete_vote_question_url(question), remote: true, data: { type: :json }, class: 'delete-voting'
-              = image_tag 'like.png', class: 'like like-green hidden delete-link'
-            = link_to vote_question_url(question), remote: true,  data: { type: :json }, class: 'voting'
-              = image_tag 'like.png', class: 'like add-link'
-        div class = 'rating'
-          = question.votes.count - question.unvotes.count
-        div class = 'new-rating'
-        div class = "unvote"
-          = question.unvotes.count
-        div class = "unvote-count"
-        div class = "unvote-link"
-          - if question.unvoted?(current_user)
-            = link_to delete_unvote_question_url(question), remote: true, data: { type: :json }, class: 'delete-unvoting'
-              = image_tag 'like.png', class: 'unlike like-green delete-unvote-link'
-            = link_to unvote_question_url(question), remote: true, data: { type: :json }, class: 'unvoting'
-              = image_tag 'like.png', class: 'unlike add-unvote-link hidden'
-          - elsif question.voted?(current_user)
-            = link_to delete_unvote_question_url(question), remote: true, data: { type: :json }, class: 'delete-unvoting'
-              = image_tag 'like.png', class: 'unlike like-green delete-unvote-link hidden'
-            = link_to unvote_question_url(question), remote: true, data: { type: :json }, class: 'unvoting disabled'
-              = image_tag 'like.png', class: 'unlike'
-          - else 
-            = link_to delete_unvote_question_url(question), remote: true, data: { type: :json }, class: 'delete-unvoting'
-              = image_tag 'like.png', class: 'unlike like-green delete-unvote-link hidden'
-            = link_to unvote_question_url(question), remote: true, data: { type: :json }, class: 'unvoting'
-              = image_tag 'like.png', class: 'unlike add-unvote-link'
+  = render partial: 'shared/vote', locals: { resource: question }
+  

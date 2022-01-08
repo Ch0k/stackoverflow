@@ -18,7 +18,7 @@
       - if link.gist?
         = javascript_include_tag link.url+".js"
       - else
-        li= link_to link.name, link.url
+        li = link_to link.name, link.url
 .badge
   - if current_user && current_user.author_of?(@question)
     - if @question.badge.present?
