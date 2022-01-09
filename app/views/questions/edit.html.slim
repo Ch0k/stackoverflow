@@ -1,20 +1,21 @@
 .question_errors
   = render 'shared/errors', resource: @question
 .edit_question
-  = form_with model: @question do |f|
+  = form_with model: @question, method: :patch do |f|
     h4 = f.label :title
     p = f.text_field :title
     h5 = f.label :body
     p = f.text_area :body
     p
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-      p Links:
-      p
-        = f.fields_for :links do |l|
-          = render 'link_fields', f: l
-        .links
-          = link_to_add_association 'add link', f, :links
+    = render 'shared/files', resource: @question
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
+      .links
+        = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
     p = f.select(:best_answer_id, @question.answers.collect {|u| [u.body, u.id]} ) 
     = f.submit 'Update question'
 
