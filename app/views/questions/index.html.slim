@@ -1,7 +1,9 @@
 = link_to 'Ask question', new_question_path, class: 'mt-30'
 - @questions.each do |question|
-  h4 = question.title
-  = link_to 'Show', question_path(question)
-  p = question.body
-  = render partial: 'shared/vote', locals: { resource: question }
+  .card
+    .card-body
+      h4 = question.title
+      p = question.body
+      = link_to 'Show', question_path(question)
+      = render partial: 'shared/vote', locals: { resource: question }
   

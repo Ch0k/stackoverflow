@@ -1,33 +1,33 @@
-.question_title
-  h4 Question title
-  p = @question.title
-.question_body
-  h5 Question title
-  p = @question.body
-  = render 'shared/files', resource: @question
-.links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      - if link.gist?
-        = javascript_include_tag link.url+".js"
-      - else
-        li = link_to link.name, link.url
-.badge
-  - if current_user && current_user.author_of?(@question)
-    - if @question.badge.present?
-      p = @question.badge.name
-      - if @question.badge.image.present?
-        = image_tag @question.badge.image, size: '50x50'
+.card
+  .card-body
+    .question_title
+      h4 = @question.title
+    .question_body
+      h5 = @question.body
+      = render 'shared/files', resource: @question
+    .links
+      p Links:
+      ul
+        - @question.links.each do |link|
+          - if link.gist?
+            = javascript_include_tag link.url+".js"
+          - else
+            li = link_to link.name, link.url
+    .badge
+      - if current_user && current_user.author_of?(@question)
+        - if @question.badge.present?
+          p = @question.badge.name
+          - if @question.badge.image.present?
+            = image_tag @question.badge.image, size: '50x50'
 
-.edit_question
-  - if current_user && current_user.author_of?(@question)
-    = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
-    = link_to 'Delete question', question_path(@question), method: :delete, class: 'mr-2'
+    .edit_question
+      - if current_user && current_user.author_of?(@question)
+        = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
+        = link_to 'Delete question', question_path(@question), method: :delete, class: 'mr-2'
 .answers-container
   .best_answer
-    h5 Best answer
     - if @best_answer.present?
+      h5 Best answer
       p = @best_answer.body
   .answers
     h5 Answers:
@@ -35,17 +35,19 @@
   .answer_errors
     == render 'shared/errors', resource: @answer
   .new_answer
-    h5 New answer:
-    = form_with model: [@question, @answer], local: false do |f|
-      h5 = f.label :body
-      p = f.text_area :body
-      p
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-      p Links:
-      p
-        = f.fields_for :links do |l|
-          = render 'shared/link_fields', f: l
-        .links
-          = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
-      = f.submit 'Create answer'
+    .card
+      .card-body
+        h5 New answer:
+        = form_with model: [@question, @answer], local: false do |f|
+          h5 = f.label :body
+          p = f.text_area :body
+          p
+            = f.label :files
+            = f.file_field :files, multiple: true, direct_upload: true
+          p Links:
+          p
+            = f.fields_for :links do |l|
+              = render 'shared/link_fields', f: l
+            .links
+              = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+          = f.submit 'Create answer'

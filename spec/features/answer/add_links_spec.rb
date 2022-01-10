@@ -36,11 +36,11 @@ feature 'User can add links to answer', %q{
     fill_in 'Body', with: 'new answer answer answer'
 
     fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Url', with: gist_url2
 
     click_on 'Create answer'
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My gist', href: gist_url2
     end
   end
 
@@ -52,7 +52,7 @@ feature 'User can add links to answer', %q{
     fill_in 'Body', with: 'new answer answer answer'
 
     fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Url', with: gist_url2
 
     click_on 'add link'
 
@@ -67,7 +67,7 @@ feature 'User can add links to answer', %q{
 
     
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My gist', href: gist_url2
       expect(page).to have_link 'My gist2', href: gist_url2
     end
   end
