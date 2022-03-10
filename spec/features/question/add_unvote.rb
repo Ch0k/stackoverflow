@@ -27,10 +27,15 @@ feature 'User can add unvote to question' do
   scenario 'User can not add unvote if answer have vote', js: true do
     sign_in(author)
     visit question_path(question)
+    all('.card').last do
+      expect(page).to have_link(href: unvote_question_path(question))
+    end
     click_link 'voting'
     within '.new-rating' do
       expect(page).to have_content "1"
     end
-    expect(page).to_not have_link(href: unvote_answer_path(question))
+    all('.card').last do
+      expect(page).to_not have_link(href: unvote_question_path(question))
+    end
   end
 end
