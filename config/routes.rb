@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   concern :votable do
     member do
-      get :vote
-      get :delete_vote
-      get :unvote
-      get :delete_unvote
+      post :vote
+      post :delete_vote
+      post :unvote
+      post :delete_unvote
     end
   end
   devise_for :users

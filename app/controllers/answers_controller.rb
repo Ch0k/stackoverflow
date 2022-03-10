@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   include Voted
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
-  before_action :set_answer, only: [:destroy, :update, :vote, :unvote, :delete_unvote, :delete_vote]
+  before_action :set_answer, only: [:destroy, :update]
 
   def create
     @answer = @question.answers.new(answer_params)
