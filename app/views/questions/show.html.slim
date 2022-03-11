@@ -3,12 +3,7 @@
   p = @question.title
 .question_body
   p = @question.body
-  = @question.count
-  - if current_user && current_user.voted?(@question)
-    = link_to 'revote', revote_question_path(@question), method: :delete
-  - else
-    = link_to 'vote', vote_question_path(@question), method: :post
-    = link_to 'unvote', unvote_question_path(@question), method: :post
+  == render 'shared/vote', resource: @question
   - if @question.files.attached?
   - @question.files.each do |file|
     p

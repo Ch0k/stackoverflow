@@ -1,5 +1,6 @@
 - if answer.persisted?
   p = answer.body
+  == render 'shared/vote', resource: answer
   p Links:
   ul
     - answer.links.each do |link|
