@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   concern :votable do
     member do
       post :vote, :unvote
-      delete :delete
+      delete :revote
     end
   end
   resources :badges

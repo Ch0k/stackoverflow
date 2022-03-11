@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :count, :vote, :unvote]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :revote, :vote, :unvote]
 
   def create
     @question = Question.new(question_params)
@@ -75,12 +75,8 @@ class QuestionsController < ApplicationController
     @question.unvote(current_user)
   end
 
-  def count
-    @question.votes.sum(:score)
-  end
-
-  def delete
-    @question.delete(current_user)
+  def revote
+    @question.revote(current_user)
   end
 
   private

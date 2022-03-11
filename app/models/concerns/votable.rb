@@ -13,7 +13,7 @@ module Votable
     Vote.create!(votable: self, score: -1, user: user)
   end
 
-  def delete(user)
+  def revote(user)
     self.votes.where(user: user).destroy_all
   end
 
