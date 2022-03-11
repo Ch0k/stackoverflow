@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :revote, :vote, :unvote]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  include Voted
 
   def create
     @question = Question.new(question_params)
@@ -65,18 +66,6 @@ class QuestionsController < ApplicationController
     @file = ActiveStorage::Attachment.find(params[:id])
     @file.purge
     redirect_back fallback_location: root_path, notice: "Delete success"
-  end
-
-  def vote
-    @question.vote(current_user)
-  end
-
-  def unvote
-    @question.unvote(current_user)
-  end
-
-  def revote
-    @question.revote(current_user)
   end
 
   private
