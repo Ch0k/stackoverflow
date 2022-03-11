@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "questions#index"
+  concern :votable do
+    member do
+      post :vote, :unvote
+      delete :delete
+    end
+  end
   resources :badges
-  resources :questions do
-    resources :answers, shallow: true, only: [:create, :update, :destroy] do
+  resources :questions, concerns: :votable do
+    resources :answers, concerns: :votable, shallow: true, only: [:create, :update, :destroy] do
       member do
         delete :delete_file_attachment
       end

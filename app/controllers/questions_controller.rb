@@ -79,6 +79,10 @@ class QuestionsController < ApplicationController
     @question.votes.sum(:score)
   end
 
+  def delete
+    @question.delete(current_user)
+  end
+
   private
 
   def load_question
