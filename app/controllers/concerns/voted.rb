@@ -7,17 +7,17 @@ module Voted
 
   def vote
     @votable.vote(current_user)
-    #render_json
+    render_json
   end
 
   def unvote
     @votable.unvote(current_user)
-    #render_json
+    render_json
   end
 
   def revote
     @votable.revote(current_user)
-    #render_json
+    render_json
   end
 
   private
@@ -32,7 +32,7 @@ module Voted
 
   def render_json(*flash)
     render json: {
-                   score: @votable.rating,
+                   score: @votable.count,
                    klass: @votable.class.to_s,
                    id: @votable.id,
                    flash: flash
