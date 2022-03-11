@@ -85,10 +85,12 @@ feature 'User can edit his answer', %q{
         click_on 'Edit' 
         expect(page).to have_link 'test.txt'
       end
-
       within '.edit_answer' do
-        click_on 'Remove'
+        accept_alert do
+          click_on 'Remove'
+        end
       end
+
       expect(page).to_not have_link 'test.txt'
     end
   end

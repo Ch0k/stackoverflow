@@ -3,6 +3,7 @@ class Question < ApplicationRecord
   belongs_to :user
   belongs_to :best_answer, class_name: 'Answer', optional: true
   has_many :links, dependent: :destroy,as: :linkable
+  has_many :votes, dependent: :destroy, as: :votaable
   has_one :badge
 
   after_update :after_update_add_badge
