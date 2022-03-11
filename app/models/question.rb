@@ -1,9 +1,10 @@
 class Question < ApplicationRecord
+  include Votable
+
   has_many :answers, dependent: :destroy
   belongs_to :user
   belongs_to :best_answer, class_name: 'Answer', optional: true
   has_many :links, dependent: :destroy,as: :linkable
-  has_many :votes, dependent: :destroy, as: :votable
   has_one :badge
 
   after_update :after_update_add_badge
@@ -16,18 +17,6 @@ class Question < ApplicationRecord
   
   validates :title, :body, presence: true
 
-  def vote(user)
-    Vote.create!(votable: self, score: 1, user: user)
-  end
-
-  def unvote(user)
-    Vote.create!(votable: self, score: -1, user: user)
-  end
-
-  def count
-    votes.sum(:score)
-  end
-  
   def after_update_add_badge
     if self.badge.present?
       self.best_answer.user.badges << self.badge
