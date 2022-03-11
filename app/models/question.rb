@@ -16,6 +16,14 @@ class Question < ApplicationRecord
   
   validates :title, :body, presence: true
 
+  def vote(user)
+    Vote.create!(votable: self, score: 1, user: user)
+  end
+
+  def unvote(user)
+    Vote.create!(votable: self, score: -1, user: user)
+  end
+
   def count
     votes.sum(:score)
   end

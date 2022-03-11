@@ -68,11 +68,11 @@ class QuestionsController < ApplicationController
   end
 
   def vote
-    Vote.vote(@question, current_user)
+    @question.vote(current_user)
   end
 
   def unvote
-    Vote.unvote(@question, current_user)
+    @question.unvote(current_user)
   end
 
   def count
