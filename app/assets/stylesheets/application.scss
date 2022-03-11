@@ -18,3 +18,92 @@
 .badge {
   color: black;
 }
+.like {
+  width: 25px;
+}
+.like-green {
+  background: greenyellow;
+}
+.unlike {
+  width: 25px;
+  transform: rotate(180deg);
+  top: 12px;
+  position: relative;
+}
+.disabled {
+  pointer-events: none;
+}
+.vote_box {
+  height: 35px;
+  width: 50px;
+  background: aqua;
+  border-radius: 15px;
+  display: inline-block;
+}
+.rating {
+  display: inline;
+  margin-left: 5px;
+  margin-right: 5px;
+  top: 8px;
+  position: relative;
+}
+.unvote_box {
+  height: 35px;
+  width: 50px;
+  background: aqua;
+  border-radius: 15px;
+  display: inline-block;
+}
+.number {
+  top: 8px;
+  position: relative;
+  left: 4px;
+}
+.number-center {
+  top: 8px;
+  position: relative;
+}
+.finger {
+  top: 12px;
+  position: relative;
+}
+.vote-link {
+  display: inline-block;
+}
+.vote-count-now {
+  display: inline-block;
+  top: 8px;
+  position: relative;
+  left: 4px;
+}
+.vote-count {
+  display: inline-block;
+  top: 8px;
+  position: relative;
+  left: 4px;
+}
+.new-rating {
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  top: 8px;
+  position: relative;
+}
+.unvote-link {
+  display: inline-block;
+}
+.unvote-count-now {
+  display: inline-block;
+  top: 8px;
+  position: relative;
+  left: 4px;
+}
+.unvote-count {
+  display: inline-block;
+  top: 8px;
+  position: relative;
+  left: 4px;
+}
+.card {
+  margin-bottom: 10px;
+}
