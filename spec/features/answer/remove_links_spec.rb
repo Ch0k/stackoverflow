@@ -26,36 +26,13 @@ feature 'User can add links to answer', %q{
       expect(page).to have_link 'My gist', href: gist_url
     end
 
-    within all('.card').last do
+    within all('.answers').last do
       click_on 'Edit'
       click_on 'remove link'
       click_on 'Update answer'
     end
 
     expect(page).to_not have_link 'My gist', href: gist_url
-    #  fill_in 'Link name', with: 'My gist'
-    #  fill_in 'Url', with: gist_url
-    #
-    #end 
-
-    #click_on 'Create answer'
-    #within all('.nested-fields').last do
-    save_and_open_page
-    #
-    #  fill_in 'Link name', with: 'My gist'
-    #  fill_in 'Url', with: gist_url
-    #
-    #end
-
-
-    #within '.ne' do
-      #expect(page).to have_link 'My gist', href: gist_url
-    #end
-    #click_on 'remove link'
-
-    #within '.answers' do
-    #  expect(page).to_not have_link 'My gist', href: gist_url
-    #end
 
   end
 end
