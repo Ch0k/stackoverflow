@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       end
     end
     member do
+      post :vote
+      post :unvote
+      delete :delete
       delete :delete_file_attachment
     end
   end
