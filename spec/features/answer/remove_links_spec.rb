@@ -7,29 +7,55 @@ feature 'User can add links to answer', %q{
 } do
 
   given(:user) {create(:user)}
-  given!(:question) {create(:question)}
+  given!(:question) { create(:question, user: user) }
   given(:gist_url) {'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c'}
 
   scenario 'User remove link when give an answer', js: true do
     sign_in(user)
 
     visit question_path(question)
-
-    fill_in 'Body', with: 'new answer answer answer'
-
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
-
-    #within '.answers' do
+    
+    within '.new_answer' do
+      fill_in 'Body', with: 'new answer answer answer'
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+      click_on 'Create answer'
+    end
+    
+    within '.answers' do
       expect(page).to have_link 'My gist', href: gist_url
-    #end
+    end
+
+    within all('.card').last do
+      click_on 'Edit'
+      click_on 'remove link'
+      click_on 'Update answer'
+    end
+
+    expect(page).to_not have_link 'My gist', href: gist_url
+    #  fill_in 'Link name', with: 'My gist'
+    #  fill_in 'Url', with: gist_url
+    #
+    #end 
+
+    #click_on 'Create answer'
+    #within all('.nested-fields').last do
     save_and_open_page
-    click_on 'remove link'
+    #
+    #  fill_in 'Link name', with: 'My gist'
+    #  fill_in 'Url', with: gist_url
+    #
+    #end
+
+
+    #within '.ne' do
+      #expect(page).to have_link 'My gist', href: gist_url
+    #end
+    #click_on 'remove link'
 
     #within '.answers' do
-      expect(page).to_not have_link 'My gist', href: gist_url
+    #  expect(page).to_not have_link 'My gist', href: gist_url
     #end
 
-    click_on 'Create answer'
   end
 end

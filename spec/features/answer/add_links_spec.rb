@@ -7,7 +7,7 @@ feature 'User can add links to answer', %q{
 } do
 
   given(:user) {create(:user)}
-  given!(:question) {create(:question)}
+  given!(:question) { create(:question, user: user) }
   given(:gist_url) {'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c'}
   given(:gist_url2) {'https://google.com'}
   given(:gist_url3) {'123'}
