@@ -6,18 +6,24 @@ module Voted
   end
 
   def vote
-    @votable.vote(current_user)
-    render_json
+    unless current_user.author_of?(@votable)
+      @votable.vote(current_user)
+      render_json
+    end
   end
 
   def unvote
-    @votable.unvote(current_user)
-    render_json
+    unless current_user.author_of?(@votable)
+      @votable.unvote(current_user)
+      render_json
+    end
   end
 
   def revote
-    @votable.revote(current_user)
-    render_json
+    unless current_user.author_of?(@votable)
+      @votable.revote(current_user)
+      render_json
+    end
   end
 
   private
