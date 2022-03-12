@@ -11,49 +11,52 @@ feature 'User can vote', %q{
   scenario 'can not vote for his question' do
       sign_in(author)
       visit question_path(question)
-      save_and_open_page
-      within '.vote' do
-        expect(page).to_not have_link 'vote'
-        expect(page).to_not have_link 'unvote'
-      end
-#  end
+      expect(page).to_not have_link 'vote'
+      expect(page).to_not have_link 'unvote'
   end
 
-  #describe 'Authenticated user', js: true do
-  #  before do
-  #    sign_in(user)
-  #    visit question_path(question)
-  #  end
+  describe 'Authenticated user', js: true do
+    before do
+      sign_in(user)
+      visit question_path(question)
+    end
 
-  #  scenario 'can vote' do
-  #    within '.vote' do
-  #      click_on 'vote'
+    scenario 'can vote' do
+      within '.vote' do
+        click_on 'vote'
+      end
+      within '.count' do
+        expect(page).to have_content '1'
+      end
+      #find('div')[:class].include?("hidden")
+      
+      #find('div.vote', visible: false)
+      
+      #find('div')[:vote]
+      expect(page).to have_link 'vote'
+      #expect(page).to have_link 'revote'
+      save_and_open_page
+    end
 
-  #      expect(page).to have_content '1'
-  #      expect(page).to_not have_link 'vote'
-  #      expect(page).to have_link 'revote'
-  #    end
-  #  end
+    scenario 'can unvote' do
+      within '.unvote' do
+        click_on 'unvote'
+      end
+      within '.count' do
+        expect(page).to have_content '-1'
+      end
+      #expect(page).to_not have_link 'vote'
+      #expect(page).to have_link 'revote'
+    end
 
-  #  scenario 'can unvote' do
-  #    within '.unvote' do
-  #      click_on 'unvote'
-
-  #      expect(page).to have_content '-1'
-  #      expect(page).to_not have_link 'vote'
-  #      expect(page).to have_link 'revote'
-  #    end
-  #  end
-
-  #  scenario 'can Revote' do
-  #    within '.vote' do
-  #      click_on 'vote'
-  #      click_on 'revote'
-#
-  #      expect(page).to have_content '0'
-  #      expect(page).to have_link 'vote'
-  #      expect(page).to_not have_link 'revote'
-  #    end
-  #  end
-  #end
+    scenario 'can Revote' do
+      within '.vote' do
+        click_on 'vote'
+      end
+      click_on 'revote'
+      expect(page).to have_content '0'
+        #expect(page).to have_link 'vote'
+        #expect(page).to_not have_link 'revote'
+    end
+  end
 end
