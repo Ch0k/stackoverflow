@@ -1,11 +1,21 @@
 $(document).on('turbolinks:load', function(){
-  $('body').on('ajax:success', '.rate .voting', function(event){
+  $('body').on('ajax:success', '.vote', function(event){
     var response = event.detail[0];
     var voteId = '.' + response.klass + '-' + response.id
+    $(voteId + ' .count').html( response.score );
+    $(voteId + ' .vote').addClass('hidden');
+    $(voteId + ' .unvote').addClass('hidden');
+    $(voteId + ' .revote').removeClass('hidden');
+    $('.flash').html(response.flash)
+   })
 
-    $(voteId + ' .rating').html('<p>' + 'Rating: ' + response.score + '</p>');
-    $(voteId + ' .voting').addClass('hidden');
-    $(voteId + ' .revote-link').removeClass('hidden');
+   $('body').on('ajax:success', '.unvote', function(event){
+    var response = event.detail[0];
+    var voteId = '.' + response.klass + '-' + response.id
+    $(voteId + ' .count').html( response.score );
+    $(voteId + ' .vote').addClass('hidden');
+    $(voteId + ' .unvote').addClass('hidden');
+    $(voteId + ' .revote').removeClass('hidden');
     $('.flash').html(response.flash)
    })
 
@@ -13,9 +23,10 @@ $(document).on('turbolinks:load', function(){
     var response = event.detail[0];
     var voteId = '.' + response.klass + '-' + response.id
 
-    $(voteId + ' .rating').html('<p>' + 'Rating: ' + response.score + '</p>');
-    $(voteId + ' .revote-link').addClass('hidden');
-    $(voteId + ' .voting').removeClass('hidden');
+    $(voteId + ' .count').html(response.score);
+    $(voteId + ' .revote').addClass('hidden');
+    $(voteId + ' .vote').removeClass('hidden');
+    $(voteId + ' .unvote').removeClass('hidden');
     $('.flash').html('')
    })
 }); 
