@@ -28,14 +28,7 @@ feature 'User can vote', %q{
       within '.count' do
         expect(page).to have_content '1'
       end
-      #find('div')[:class].include?("hidden")
-      
-      #find('div.vote', visible: false)
-      
-      #find('div')[:vote]
       expect(page).to have_link 'vote'
-      #expect(page).to have_link 'revote'
-      save_and_open_page
     end
 
     scenario 'can unvote' do
@@ -45,8 +38,6 @@ feature 'User can vote', %q{
       within '.count' do
         expect(page).to have_content '-1'
       end
-      #expect(page).to_not have_link 'vote'
-      #expect(page).to have_link 'revote'
     end
 
     scenario 'can Revote' do
@@ -55,8 +46,6 @@ feature 'User can vote', %q{
       end
       click_on 'revote'
       expect(page).to have_content '0'
-        #expect(page).to have_link 'vote'
-        #expect(page).to_not have_link 'revote'
     end
   end
 end
