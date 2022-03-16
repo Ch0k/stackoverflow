@@ -1,0 +1,26 @@
+.div class = "#{resource.class}-#{resource.id}"
+  p Counter
+  .count
+    = resource.count
+  - if current_user && current_user.author_of?(resource)
+  - else  
+    - if current_user && current_user.voted?(resource)
+      .revote  
+        = link_to 'revote', polymorphic_path(resource, action: :revote),
+                                  method: :delete, remote: true, data: { type: :json }
+      .vote class = 'hidden'
+        = link_to 'vote', polymorphic_path(resource, action: :vote),
+                                  method: :post, remote: true, data: { type: :json }
+      .unvote class = 'hidden'
+        = link_to 'unvote', polymorphic_path(resource, action: :unvote),
+                                method: :post, remote: true, data: { type: :json }
+    - else
+      .vote
+        = link_to 'vote', polymorphic_path(resource, action: :vote),
+                                  method: :post, remote: true, data: { type: :json }
+      .unvote
+        = link_to 'unvote', polymorphic_path(resource, action: :unvote),
+                                method: :post, remote: true, data: { type: :json }
+      .revote class = 'hidden'
+        = link_to 'revote', polymorphic_path(resource, action: :revote),
+                                  method: :delete, remote: true, data: { type: :json }

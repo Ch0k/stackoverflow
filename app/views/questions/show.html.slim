@@ -2,8 +2,8 @@
   h4 Question title
   p = @question.title
 .question_body
-  h5 Question title
   p = @question.body
+  == render 'shared/vote', resource: @question
   - if @question.files.attached?
   - @question.files.each do |file|
     p
