@@ -21,4 +21,5 @@ Rails.application.routes.draw do
       delete :delete_file_attachment
     end
   end
+  mount ActionCable.server => '/cable'
 end

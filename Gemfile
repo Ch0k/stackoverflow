@@ -16,6 +16,8 @@ gem 'devise'
 gem 'bootstrap', '~> 5.1.3'
 gem 'aws-sdk-s3'
 gem 'cocoon'
+gem 'skim'
+gem 'gon'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
