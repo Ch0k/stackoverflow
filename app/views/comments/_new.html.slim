@@ -1,0 +1,5 @@
+= form_with model: [resource, @comment], local: true do |f|
+  h5 Add new comment
+  h6 = f.label :body
+  p = f.text_area :body
+  = f.submit 'Add comment'

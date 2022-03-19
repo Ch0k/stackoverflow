@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   end
   resources :badges
   resources :questions, concerns: :votable do
+    resources :comments, only: [:create]
     resources :answers, concerns: :votable, shallow: true, only: [:create, :update, :destroy] do
+      resources :comments, only: [:create]
       member do
         delete :delete_file_attachment
       end

@@ -36,6 +36,7 @@ class QuestionsController < ApplicationController
     @best_answer = @question.best_answer
     @answer = Answer.new
     @answer.links.new
+    @comment = Comment.new
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
   end
 

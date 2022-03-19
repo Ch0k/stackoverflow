@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: [:create]
   before_action :set_answer, only: [:destroy, :update]
+  after_action :publish_answer, only: [:create]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -49,5 +50,23 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    renderer = ApplicationController.renderer_with_user(current_user)
+    @question = @answer.question
+    AnswerChannel.broadcast_to(
+      @question,
+      { #author_id: @answer.author.id,
+        body: renderer.render(partial: 'answers/answer', locals: { answer: @answer }) 
+      }
+    #)
+    #ActionCable.server.broadcast('answer',
+    #  ApplicationController.render(
+    #    partial: 'answers/answer',
+    #    locals: { answer: @answer }
+    #  )
+  )
   end
 end
