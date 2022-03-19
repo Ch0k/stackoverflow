@@ -31,13 +31,12 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    #@answers = @question.answers
-    #@answer = @question.answers.build
     @best_answer = @question.best_answer
     @answer = Answer.new
     @answer.links.new
     @comment = Comment.new
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
+    @comments = @question.comments
   end
 
   def new

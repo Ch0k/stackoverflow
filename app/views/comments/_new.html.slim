@@ -1,3 +1,4 @@
+= render 'shared/errors', resource: @comment
 = form_with model: [resource, @comment], local: true do |f|
   h5 Add new comment
   h6 = f.label :body

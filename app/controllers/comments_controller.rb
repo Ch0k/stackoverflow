@@ -1,19 +1,20 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
-  before_action :load_question, only: [:create]
+  before_action :load_resource, only: [:create]
 
   def create
-    @comment = @question.comments.new(comment_params)
+    @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
     if @comment.save
-      redirect_to @question, notice: 'Comment successfuly created'
+      redirect_to root_path, notice: 'Comment successfuly created'
     end
   end
 
   private
 
-  def load_question
-    @question = Question.find(params[:question_id])
+  def load_resource
+    @klass = [Question, Answer].find { |klass| params["#{klass.name.underscore}_id"] }
+    @commentable = @klass.find(params["#{@klass.name.underscore}_id"])
   end
 
   def comment_params
