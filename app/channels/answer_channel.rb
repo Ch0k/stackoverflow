@@ -1,6 +1,5 @@
 class AnswerChannel < ApplicationCable::Channel
   def follow
-    #question = GlobalID::Locator.locate(params[:id])
-    stream_for 'answer'
+    stream_from "question_#{params[:question_id]}_answers"
   end
 end

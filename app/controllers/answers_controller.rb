@@ -54,19 +54,11 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    renderer = ApplicationController.renderer_with_user(current_user)
-    @question = @answer.question
-    AnswerChannel.broadcast_to(
-      @question,
-      { #author_id: @answer.author.id,
-        body: renderer.render(partial: 'answers/answer', locals: { answer: @answer }) 
+    ActionCable.server.broadcast(
+      "question_#{@answer.question_id}_answers", {
+        answer: @answer,
+        count: @answer.count
       }
-    #)
-    #ActionCable.server.broadcast('answer',
-    #  ApplicationController.render(
-    #    partial: 'answers/answer',
-    #    locals: { answer: @answer }
-    #  )
-  )
+    )
   end
 end
