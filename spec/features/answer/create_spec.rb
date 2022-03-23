@@ -65,4 +65,42 @@ feature 'User can create answer', %q{
     end
     expect(page).to_not have_link 'Create answer'
   end
+
+  context 'mulitple sessions' do
+    given(:some_url) { 'https://ya.ru' }
+
+    scenario "question appears on another user's page" do
+      Capybara.using_session('second_user') do
+        second_user = create(:user)
+
+        sign_in(second_user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+
+        fill_in 'Title', with: 'answer title'
+
+        attach_files
+
+        fill_in 'Link name', with: 'My link'
+        fill_in 'Url', with: some_url
+
+        click_on 'Reply'
+
+        expect(page).to have_content 'answer title'
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+
+      Capybara.using_session('second_user') do
+        expect(page).to have_content 'answer title'
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'My link', href: some_url
+      end
+    end
+  end
 end
