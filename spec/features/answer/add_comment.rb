@@ -42,7 +42,7 @@ feature 'Add comment to answer' do
       end
 
       Capybara.using_session('second_user') do
-        within ".Answer-#{answer.id}" do
+        within ".answer-comment-new" do
           expect(page).to have_content 'Test comment'
         end
       end
