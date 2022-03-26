@@ -1,0 +1,7 @@
+.comments
+  h5 Comments
+  - resource.comments.each do |comment|
+    .comment-body
+      span = comment.user.email
+      span  commented:
+      span = comment.body

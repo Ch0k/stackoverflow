@@ -4,3 +4,9 @@
 import { createConsumer } from "@rails/actioncable"
 
 export default createConsumer()
+
+//var App = App || {};
+////App.cable = ActionCable.createConsumer();
+//consumer.subscriptions.create('QuestionsChannel', {
+//  connected: console.log('connected')
+//})
