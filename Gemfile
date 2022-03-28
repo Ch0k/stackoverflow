@@ -18,6 +18,11 @@ gem 'aws-sdk-s3'
 gem 'cocoon'
 gem 'skim'
 gem 'gon'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-facebook'
+gem "omniauth-rails_csrf_protection"
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -30,10 +35,12 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'spring'
+  gem "letter_opener"
 end
 
 group :test do
   gem 'capybara', '>= 3.26'
+  gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
