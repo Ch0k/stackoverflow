@@ -21,18 +21,20 @@ div#question-channel-provider data-question-id="#{@question.id}"
         = javascript_include_tag link.url+".js"
       - else
         li= link_to link.name, link.url
-== render 'comments/index', resource: @question 
-== render 'comments/new', resource: @question
+== render 'comments/index', resource: @question
+
+- if can?(:create, Comment) 
+  == render 'comments/new', resource: @question
 .badge
   - if current_user && current_user.author_of?(@question)
     - if @question.badge.present?
       p = @question.badge.name
       - if @question.badge.image.present?
         = image_tag @question.badge.image, size: '50x50'
-
 .edit_question
-  - if current_user && current_user.author_of?(@question)
+  - if can?(:update, @question)
     = link_to 'Edit', edit_question_path(@question), class: 'mr-2'
+  - if can?(:destroy, @question)
     = link_to 'Delete question', question_path(@question), method: :delete, class: 'mr-2'
 .answers-container
   .best_answer

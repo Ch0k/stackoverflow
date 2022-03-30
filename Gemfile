@@ -23,6 +23,7 @@ gem 'omniauth-github'
 gem 'omniauth-facebook'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-google-oauth2'
+gem 'cancancan'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

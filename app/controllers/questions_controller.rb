@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   after_action :publish_question, only: [:create]
 
+  authorize_resource
+
   def create
     @question = Question.new(question_params)
     @question.user = current_user
@@ -27,6 +29,7 @@ class QuestionsController < ApplicationController
   end
 
   def index
+    #authorize! :index, Question
     @questions = Question.all
   end
 

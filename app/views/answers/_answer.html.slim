@@ -8,12 +8,14 @@
   - if answer.files.attached?
     - answer.files.each do |file|
       p= link_to file.filename.to_s, url_for(file)
-  - if current_user && current_user.author_of?(answer)
+  - if can?(:update, answer)
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  - if can?(:destroy, answer)  
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'link-delete'
   == render 'comments/index', resource: answer
   .answer-comment-new
-    == render 'comments/new', resource: answer
+    - if can?(:create, Comment) 
+      == render 'comments/new', resource: answer
   .line
 = form_with model: answer, local: false, class: 'hidden edit_answer', html: { id: "edit-answer-#{answer.id}" } do |f|
   h5 = f.label :body

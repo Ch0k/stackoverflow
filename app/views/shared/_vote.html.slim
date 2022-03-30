@@ -3,7 +3,8 @@
   .count
     = resource.count
   - if current_user && current_user.author_of?(resource)
-  - else  
+  - else 
+    /- if can?(:vote, resource)
     - if current_user && current_user.voted?(resource)
       .revote  
         = link_to 'revote', polymorphic_path(resource, action: :revote),
